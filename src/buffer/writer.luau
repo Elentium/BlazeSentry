@@ -6,9 +6,6 @@
 	Serializes into one reusable big buffer (config.maxBufferSize).
 	START sets the write cursor (with optional offset for metadata/headers)
 	FINISH allocates a buffer of length `cursor` and copies bigBuffer [0, cursor).
-
-	Type nodes are responsible for calling NEED(n) once before writing their fields.
-	The primitive write functions themselves do no bounds checking.
 ]]
 -----------------------------------------------------
 -- DEPENDENCIES                                    --

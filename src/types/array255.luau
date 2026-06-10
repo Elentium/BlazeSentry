@@ -36,7 +36,7 @@ const function arrayNodeBuild<T>(valueType: typeNode<T>): typeNode<{ T }>
 	const function array255_write(value: { T }): ()
 		const len: number = #value
 		WRITE_U8(len)
-		for i: number, v: any in value do
+		for i: number, v: T in value do
 			valWrite(v)
 		end
 	end

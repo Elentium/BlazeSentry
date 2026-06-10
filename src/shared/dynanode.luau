@@ -58,7 +58,7 @@ return table.freeze({
 	write = @native function<T>(value: T): ()
 		-- initialize types & other related constants on first op (prevent recursive dependency from any <-> types <--> dynanode)
 		if typesModule == nil then
-			typesModule = require("../types" :: string)
+			typesModule = require("../types")
 			serInstanceSigns = require("../static/serInstanceSigns")
 			SER_INSTANCE_NAMEMAP = serInstanceSigns.nameLookup
 			SER_INSTANCE_SIGNMAP = serInstanceSigns.signLookup
@@ -101,12 +101,12 @@ return table.freeze({
 		end
 
 		-- now the node write
-		(node :: typeNode).write(value)
+		node.write(value)
 	end,
 
 	read = @native function(): any
 		if typesModule == nil then
-			typesModule = require("../types" :: string)
+			typesModule = require("../types")
 			serInstanceSigns = require("../static/serInstanceSigns")
 			SER_INSTANCE_NAMEMAP = serInstanceSigns.nameLookup
 			SER_INSTANCE_SIGNMAP = serInstanceSigns.signLookup
@@ -115,7 +115,7 @@ return table.freeze({
 		end
 		local sign: number = READ_SIGN()
 
-		local node: possibleNode = SIGNMAP[sign :: number]
+		local node: possibleNode = SIGNMAP[sign]
 		if not node then
 			return
 		end
@@ -134,7 +134,7 @@ return table.freeze({
 				node = node(className)
 			elseif sign == ENUM_ID then
 				local id: number = READ_ID()
-				const enum: Enum = ENUM_ID_MAP[id :: number]
+				const enum: Enum = ENUM_ID_MAP[id]
 				if not enum then
 					return
 				end
@@ -142,6 +142,6 @@ return table.freeze({
 			end
 		end
 
-		return (node :: typeNode).read()
+		return node.read()
 	end,
 })
