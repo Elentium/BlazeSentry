@@ -3,4 +3,4 @@ name = "elentium/blazesentry"
 version = "0.1.1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
-exclude = ["roblox", "pesde.toml"]
+exclude = ["roblox", "pesde.toml", "docs"]
