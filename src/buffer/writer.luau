@@ -73,10 +73,6 @@ end
 const function start(offset: number?): ()
 	cursor = offset or 0
 	off = cursor
-	if cursor > bigCap then
-		FAIL_FN(`BlazeSentry writer: offset {cursor} exceeds bigBuffer size {bigCap}`, 0)
-		cursor = bigCap + 1 -- poison; every subsequent need() call will fail.
-	end
 end
 
 @native
