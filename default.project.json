@@ -1,0 +1,7 @@
+{
+  "name": "BlazeSentry",
+  "emitLegacyScripts": false,
+  "tree": {
+      "$path": "src"
+  }
+}
