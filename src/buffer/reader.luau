@@ -52,6 +52,9 @@ const CFRAME_NEW: (() -> CFrame) & ((Vector3) -> CFrame) & ((Vector3, Vector3) -
     number
 ) -> CFrame) = CFrame.new
 
+const NAN: number = math.nan
+const HUGE: number = math.huge
+
 -----------------------------------------------------
 -- API                                             --
 -----------------------------------------------------
@@ -129,7 +132,7 @@ const function readf16(): number
 
 	local result: number
 	if exp16 == 0x1F then
-		result = if mant10 ~= 0 then 0 / 0 else math.huge
+		result = if mant10 ~= 0 then NAN else HUGE
 	elseif exp16 == 0 then
 		result = 0
 	else
@@ -187,7 +190,7 @@ const function readf24(): number
 
 	local result: number
 	if exp24 == 0x7F then
-		result = if mant16 ~= 0 then 0 / 0 else math.huge
+		result = if mant16 ~= 0 then NAN else HUGE
 	elseif exp24 == 0 then
 		result = 0
 	else
