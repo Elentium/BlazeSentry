@@ -1,3 +1,6 @@
+## 0.1.5:
+- Fixed default.project.json so that wally package works properly
+
 ## 0.1.4:
 - Merged upstream VoidSentry2 v0.1.4 changes
 - Added `VoidSentry Family` subsection

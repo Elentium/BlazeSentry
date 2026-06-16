@@ -2,7 +2,7 @@
 --!native
 --[[
 	================================================================================
-	  BlazeSentry  |  v0.1.4  |  Apache-2.0  |  by IAMNOTULTRA3
+	  BlazeSentry  |  v0.1.5  |  Apache-2.0  |  by IAMNOTULTRA3
 	================================================================================
 	  Buffer serialization library for Roblox. Converts Luau & Roblox values into
 	buffers and back. Supports schema-based (static) and schemaless
@@ -94,7 +94,7 @@
 	  LINKS
 	================================================================================
 	• Github: https://github.com/Elentium/BlazeSentry
-	• Wally: "elentium/BlazeSentry@0.1.4" https://wally.run/package/elentium/BlazeSentry
+	• Wally: "elentium/BlazeSentry@0.1.5" https://wally.run/package/elentium/BlazeSentry
 	• Creator Store: https://create.roblox.com/store/asset/109800466320728
 	• Pesde: "pesde add elentium/BlazeSentry" https://pesde.dev/packages/elentium/BlazeSentry
 ]]
