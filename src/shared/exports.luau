@@ -159,6 +159,8 @@ export type blazeSentryTypes = {
 	boolPacked: typeNode<{ boolean }>
 }
 
+export type blazeSentryConstants = "maxBufferSize" | "dynamicVectorType" | "dynamicInstanceType" | "unsupportedUnionExTypes"
+
 export type BlazeSentry = {
 	static: staticSerializer,
 	dynamic: dynamicSerializer,
@@ -170,7 +172,9 @@ export type BlazeSentry = {
 	writeFinish: () -> buffer,
 	readFinish: () -> (),
 	getWriteCursor: () -> number,
-	getReadCursor: () -> number
+	getReadCursor: () -> number,
+	updateBigBuffer: () -> (),
+	setConstant: <T>(constant: blazeSentryConstants, value: T) -> (),
 }
 
 return {}

@@ -2,6 +2,11 @@
   "name": "blazesentry",
   "emitLegacyScripts": false,
   "tree": {
-      "$path": "src"
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "BlazeSentry": {
+        "$path": "src"
+      }
+    }
   }
 }

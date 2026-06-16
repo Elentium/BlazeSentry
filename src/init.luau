@@ -2,7 +2,7 @@
 --!native
 --[[
 	================================================================================
-	  BlazeSentry  |  v0.1.1  |  Apache-2.0  |  by IAMNOTULTRA3
+	  BlazeSentry  |  v0.1.4  |  Apache-2.0  |  by IAMNOTULTRA3
 	================================================================================
 	  Buffer serialization library for Roblox. Converts Luau & Roblox values into
 	buffers and back. Supports schema-based (static) and schemaless
@@ -23,6 +23,8 @@
 	  readStart(buf, offset?) -> ()								  -- start the read operation
 	  readFinish() -> ()										  -- finish the read operation
 	  getReadCursor() -> number								      -- get the current read position
+	  updateBigBuffer() -> ()                                     -- resize scratch buffer after maxBufferSize changes
+	  setConstant(constant, value) -> ()                          -- update runtime configuration
 
 	  static.serialize(serdes, value, offset?, compressionLevel?) -> buffer?
 	  static.deserialize(serdes, buf, offset?, wasCompressed?) -> value?
@@ -92,10 +94,15 @@
 	  LINKS
 	================================================================================
 	• Github: https://github.com/Elentium/BlazeSentry
-	• Wally: "elentium/BlazeSentry@0.1.1" https://wally.run/package/elentium/BlazeSentry
+	• Wally: "elentium/BlazeSentry@0.1.4" https://wally.run/package/elentium/BlazeSentry
 	• Creator Store: https://create.roblox.com/store/asset/109800466320728
 	• Pesde: "pesde add elentium/BlazeSentry" https://pesde.dev/packages/elentium/BlazeSentry
 ]]
+-----------------------------------------------------
+-- SERVICES                                        --
+-----------------------------------------------------
+local RunService = game:GetService("RunService")
+
 -----------------------------------------------------
 -- DEPENDENCIES                                    --
 -----------------------------------------------------
@@ -105,6 +112,7 @@ local dynamic = require("@self/serializers/dynamic")
 local typeSigns = require("@self/shared/config/typeSigns")
 local instanceSchemas = require("@self/static/instanceSchemas")
 local typesModule = require("@self/types")
+local config = require("@self/shared/config")
 local serInstanceSigns = require("@self/static/serInstanceSigns")
 local writer = require("@self/buffer/writer")
 local reader = require("@self/buffer/reader")
@@ -116,6 +124,7 @@ export type staticSerializer = exports.staticSerializer
 export type dynamicSerializer = exports.dynamicSerializer
 export type types = exports.blazeSentryTypes
 export type BlazeSentry = exports.BlazeSentry
+export type constants = exports.blazeSentryConstants
 export type possibleNode = exports.possibleNode
 export type typeNode<T = any> = exports.typeNode<T>
 
@@ -124,6 +133,7 @@ export type typeNode<T = any> = exports.typeNode<T>
 -----------------------------------------------------
 local signMap: { possibleNode } = typesModule.signMap
 local types: types = typesModule.types
+local editableConstants: { [string]: boolean } = config.editableConstants
 
 -----------------------------------------------------
 -- INIT                                            --
@@ -167,6 +177,26 @@ local function registerInstanceSchema(className: string, schema: { [string]: typ
 	serInstanceSigns.nameLookup[className] = idx
 end
 
+local updateBigBuffer = writer.UPDATEBIGBUFFER
+
+local function setConstant<T>(constant: constants, value: T): ()
+	if not editableConstants[constant] then
+		return
+	end
+
+	if type(value) == "table" then
+		local tbl = config[constant]
+		for k, v in value :: any do
+			tbl[k] = v
+		end
+	else
+		config[constant] = value
+		if constant == "maxBufferSize" then
+			updateBigBuffer()
+		end
+	end
+end
+
 -----------------------------------------------------
 -- MODULE                                          --
 -----------------------------------------------------
@@ -181,7 +211,15 @@ local BlazeSentry = {
 	writeFinish = writer.FINISH,
 	readFinish = reader.FINISH,
 	getWriteCursor = writer.GETCURSOR,
-	getReadCursor = reader.GETCURSOR
+	getReadCursor = reader.GETCURSOR,
+	updateBigBuffer = updateBigBuffer,
+	setConstant = setConstant,
 }
+
+if RunService:IsClient() then
+	require("@self/static/instanceMap/client")
+else
+	require("@self/static/instanceMap/server")
+end
 
 return BlazeSentry :: BlazeSentry

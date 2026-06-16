@@ -36,8 +36,6 @@ const OR: (...number) -> number = bit32.bor
 const EXTRACT: (number, number, number?) -> number = bit32.extract
 const LSHIFT: (number, number) -> number = bit32.lshift
 
-const FAIL_FN: (<T...>(T...) -> ()) | (<T>(T, number?) -> never) = config.strictMode and error or warn
-
 const HUGE: number = math.huge
 const NHUGE: number = -HUGE
 const SQRT: (number) -> number = math.sqrt
@@ -45,8 +43,8 @@ const SQRT: (number) -> number = math.sqrt
 -----------------------------------------------------
 -- STATE                    			           --
 -----------------------------------------------------
-const bigCap: number = config.maxBufferSize
-const bigBuffer: buffer = CREATE(bigCap)
+local bigCap: number = config.maxBufferSize
+local bigBuffer: buffer = CREATE(bigCap)
 
 local cursor: number = 0
 local off: number = 0
@@ -56,14 +54,7 @@ local off: number = 0
 -----------------------------------------------------
 @native
 const function need(size: number): boolean
-	if cursor + size > bigCap then
-		FAIL_FN(
-			`[BlazeSentry]: writer.need throw – need {size} byte(s) at cursor {cursor} but bigBuffer ends at {bigCap} (config.maxBufferSize)`,
-			0
-		)
-		return false
-	end
-	return true
+	return cursor + size <= bigCap
 end
 
 @native
@@ -530,11 +521,24 @@ const function getcursor(): number
 	return cursor
 end
 
+@native
+const function updateBigBuffer(): ()
+	const cap = config.maxBufferSize
+	if cap == bigCap then
+		return
+	end
+	const prev = bigBuffer
+	bigBuffer = CREATE(cap)
+	COPY(bigBuffer, 0, prev, 0, bigCap)
+	bigCap = cap
+end
+
 return table.freeze({
 	START = start,
 	FINISH = finish,
 	NEED = need,
 	GETCURSOR = getcursor,
+	UPDATEBIGBUFFER = updateBigBuffer,
 
 	U8 = writeu8,
 	I8 = writei8,

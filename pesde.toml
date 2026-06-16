@@ -1,12 +1,11 @@
 name = "elentium/blazesentry"
-version = "0.1.1"
+version = "0.1.4"
 description = "BlazeSentry Fork Oriented for Pure Performance"
 authors = ["IAMNOTULTRA3"]
 repository = "https://github.com/Elentium/BlazeSentry"
 license = "APACHE-2.0"
 includes = [
     "src/**/*.luau",
-    "docs/**/*.luau",
     ".vscode",
     ".gitignore",
     "CHANGELOG.md",
