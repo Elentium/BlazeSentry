@@ -51,7 +51,7 @@ end
 game.DescendantAdded:Connect(onInstance)
 
 for _, instance: Instance in game:GetDescendants() do
-	onInstance(instance)
+	tasks.spawn(onInstance, instance)
 end
 
 return nil
