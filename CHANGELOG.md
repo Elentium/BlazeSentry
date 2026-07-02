@@ -1,3 +1,6 @@
+## Hotfix:
+- fixed the commiters display name to be `mac`
+
 ## 0.1.6:
 - Merged pull request from RemnantsOfSiren
 - Updated docs & published the packages
