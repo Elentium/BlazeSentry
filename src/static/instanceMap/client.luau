@@ -1,7 +1,7 @@
 --!strict
 --!optimize 2
 --[[
-    InstanceMap.client V0.1.4
+    InstanceMap.client V0.1.6
 
     Initializes client instance map
 ]]
@@ -51,7 +51,7 @@ end
 game.DescendantAdded:Connect(onInstance)
 
 for _, instance: Instance in game:GetDescendants() do
-	tasks.spawn(onInstance, instance)
+	task.spawn(onInstance, instance)
 end
 
 return nil

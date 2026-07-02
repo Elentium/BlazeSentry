@@ -1,3 +1,7 @@
+## 0.1.6:
+- Merged pull request from RemnantsOfSiren
+- Updated docs & published the packages
+
 ## 0.1.5:
 - Fixed default.project.json so that wally package works properly
 
